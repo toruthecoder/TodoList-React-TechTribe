@@ -6,7 +6,7 @@ const List = ({ onDelete }) => {
     // const [editId, setEditId] = useState(null);
     // const [editText, setEditText] = useState('')
     const { todos, toggleTodos } = useTodos()
-    
+
     return (
         <>
             {
@@ -34,3 +34,5 @@ const List = ({ onDelete }) => {
 }
 
 export default List
+
+// Comment for simmulating push
