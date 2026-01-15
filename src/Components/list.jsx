@@ -69,7 +69,7 @@ const List = ({ onDelete, onEdit }) => {
                             </div>
                         </div>
                         <div>
-                            <p className="text-[12px]">Last-created: {getTimeAgo(todo.lastCreated)} -- Last-Edit:{getTimeAgo(todo.lastEdit)}</p>
+                            <p className="text-[12px]">Last-created: {getTimeAgo(todo.lastCreated)} -- Last-Edit: {getTimeAgo(todo.lastEdit)}</p>
                         </div>
                     </li >
                 ))

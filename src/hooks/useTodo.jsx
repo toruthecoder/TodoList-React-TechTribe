@@ -50,14 +50,18 @@ export const TodoProvider = ({ children }) => {
     })
 
     // Sort todo
-    // const sortTodos = todos.sort((a, b) => {
-    //     if (sortBy === 'alphabet') return a.text.localeCompare(b.text);
-    //     if (sortBy === 'last-edited') return b.lastEdit - a.lastEdit;
-    //     if (sortBy === 'recently-created') return b.lastCreated - a.lastCreated;
-    //     return 0;
-    // });
+    const sortTodos = todos.sort((a, b) => {
+        if (sortBy === 'Sort') return a.todo
+        if (sortBy === 'alphabet') return a.text.localeCompare(b.text)
+        if (sortBy === 'last-edited') return b.lastEdit - a.lastEdit
+        if (sortBy === 'recently-created') return b.lastCreated - a.lastCreated
+        return 0
+    })
+
+
     const value = {
-        todos: filterdTodos,
+        todos: sortTodos,
+        // todos: filterdTodos,
         addTodo,
         editTodo,
         deleteTodo,

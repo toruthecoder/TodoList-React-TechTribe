@@ -1,6 +1,5 @@
 import { useTodos } from '../context/todoContext'
 import { useState } from 'react';
-
 import ChillhopVideo from '../assets/Chillhop.mp4';
 import Swal from 'sweetalert2'
 import { Rings } from 'react-loader-spinner'
@@ -8,7 +7,7 @@ import List from "../Components/List"
 
 const ToDo = () => {
     const [value, setValue] = useState('')
-    const { addTodo, setfiltered, deleteTodo, editTodo } = useTodos()
+    const { addTodo, setfiltered, deleteTodo, editTodo, setSortBy } = useTodos()
     const [editId, setEditId] = useState(null)
     const [loading, setLoading] = useState(true)
 
@@ -105,10 +104,10 @@ const ToDo = () => {
 
                         <div>
                             <select name="" id="select"
-                                className='relative focus:outline-none appearance-none ml-11.5 w-50 h-15 font-normal text-[20px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 pl-6.25' onChange={(e) => setfiltered(e.target.value)} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}>
+                                className='relative focus:outline-none appearance-none ml-11.5 w-50 h-15 font-normal text-[20px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 pl-6.25' onChange={(e) => setSortBy(e.target.value)} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}>
                                 <option className='Sort bg-black text-white' value="Sort">Sort By</option>
                                 <option className='alphabet bg-black text-white' value="alphabet">Alphabet</option>
-                                <option className='Last-Edited bg-black text-white' value="Last Edited">
+                                <option className='Last-Edited bg-black text-white' value="last-edited">
                                     Last Edited</option>
                                 <option className='recently-created bg-black text-white' value="recently-created">Recently Created
                                 </option>
