@@ -1,9 +1,10 @@
 import { useTodos } from '../context/todoContext'
 import { useState } from 'react';
-import List from './List.jsx'
+
 import ChillhopVideo from '../assets/Chillhop.mp4';
 import Swal from 'sweetalert2'
 import { Rings } from 'react-loader-spinner'
+import List from "../Components/List"
 
 const ToDo = () => {
     const [value, setValue] = useState('')
