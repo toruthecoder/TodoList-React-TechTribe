@@ -1,5 +1,5 @@
 import { useTodos } from '../context/todoContext'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import List from './List.jsx'
 import ChillhopVideo from '../assets/Chillhop.mp4';
 import Swal from 'sweetalert2'
@@ -10,13 +10,6 @@ const ToDo = () => {
     const { addTodo, setfiltered, deleteTodo, editTodo } = useTodos()
     const [editId, setEditId] = useState(null)
     const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false)
-        }, 5000)
-        return () => clearTimeout(timer)
-    }, [])
 
     const handleAdd = () => {
         if (!value.trim()) {
@@ -77,7 +70,8 @@ const ToDo = () => {
             )}
 
             {/* Video */}
-            <video autoPlay loop playsInline muted className="absolute inset-0 h-full w-full object-cover z-0">
+            <video
+                autoPlay loop playsInline muted className="absolute inset-0 h-full w-full object-cover z-0" onCanPlay={() => { setLoading(false) }}>
                 <source src={ChillhopVideo} type="video/mp4" />
             </video>
 
@@ -107,6 +101,18 @@ const ToDo = () => {
                                 </option>
                             </select>
                         </div>
+
+                        <div>
+                            <select name="" id="select"
+                                className='relative focus:outline-none appearance-none ml-11.5 w-50 h-15 font-normal text-[20px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 pl-6.25' onChange={(e) => setfiltered(e.target.value)} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}>
+                                <option className='Sort bg-black text-white' value="Sort">Sort By</option>
+                                <option className='alphabet bg-black text-white' value="alphabet">Alphabet</option>
+                                <option className='Last-Edited bg-black text-white' value="Last Edited">
+                                    Last Edited</option>
+                                <option className='recently-created bg-black text-white' value="recently-created">Recently Created
+                                </option>
+                            </select>
+                        </div>
                     </div>
                     <div className="list">
                         <ul className='mt-18.5 break-word h-[63vh] overflow-auto flex flex-col items-start px-5'>{
@@ -114,10 +120,8 @@ const ToDo = () => {
                                 onDelete={(id) => handleDelete(id)}
 
                                 onEdit={(todo) => {
-                                    {
-                                        setValue(todo.text)
-                                        setEditId(todo)
-                                    }
+                                    setValue(todo.text)
+                                    setEditId(todo)
                                 }}
                             />
                         }</ul>

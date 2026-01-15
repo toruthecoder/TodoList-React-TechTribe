@@ -8,7 +8,7 @@ export const TodoProvider = ({ children }) => {
         return parsedTodos;
     })
     const [filtered, setfiltered] = useState('all')
-
+    const [sortBy, setSortBy] = useState('Sort')
 
     // Set Local Todos
     useEffect(() => {
@@ -20,7 +20,7 @@ export const TodoProvider = ({ children }) => {
     const addTodo = (text) => {
         // setting up the create of todos by using setTodos keeping track of every item by using special id and setting text and checked state
         setTodos(previous => [
-            ...previous, { id: Date.now(), text, completed: false }
+            ...previous, { id: Date.now(), text, completed: false, lastCreated: Date.now(), lastEdit: Date.now() }
         ])
     }
 
@@ -33,7 +33,7 @@ export const TodoProvider = ({ children }) => {
     // Edit/Update Todo
     const editTodo = (id, newText) => {
         // checking if the clicked text match the special id or not if it does change the text
-        setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, text: newText } : todo))
+        setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, text: newText, lastEdit: Date.now() } : todo))
     }
 
     // toggle Todos
@@ -49,13 +49,21 @@ export const TodoProvider = ({ children }) => {
         return true
     })
 
+    // Sort todo
+    // const sortTodos = todos.sort((a, b) => {
+    //     if (sortBy === 'alphabet') return a.text.localeCompare(b.text);
+    //     if (sortBy === 'last-edited') return b.lastEdit - a.lastEdit;
+    //     if (sortBy === 'recently-created') return b.lastCreated - a.lastCreated;
+    //     return 0;
+    // });
     const value = {
         todos: filterdTodos,
         addTodo,
         editTodo,
         deleteTodo,
         toggleTodos,
-        setfiltered
+        setfiltered,
+        setSortBy
     }
 
     return (
