@@ -1,67 +1,102 @@
 import { useTodos } from '../context/todoContext'
-import { useState } from 'react';
-import List from './List'
+import { useState, useEffect } from 'react';
+import List from './List.jsx'
 import ChillhopVideo from '../assets/Chillhop.mp4';
+import Swal from 'sweetalert2'
+import { Rings } from 'react-loader-spinner'
 
 const ToDo = () => {
     const [value, setValue] = useState('')
-    const [showConfirm, setShowConfirm] = useState(false)
-    const [deleteId, setDeleteId] = useState(null)
-    const { addTodo, setfiltered, deleteTodo } = useTodos()
+    const { addTodo, setfiltered, deleteTodo, editTodo } = useTodos()
+    const [editId, setEditId] = useState(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false)
+        }, 5000)
+        return () => clearTimeout(timer)
+    }, [])
 
     const handleAdd = () => {
         if (!value.trim()) {
             return
         }
-        addTodo(value.trim())
-        setValue('')
+        if (editId) {
+            editTodo(editId.id, value)
+            setEditId(null)
+            setValue('')
+        } else {
+            addTodo(value.trim())
+            setValue('')
+        }
     }
+
+    // Creating handleDelete function for 
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteTodo(id)
+
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your todo has been deleted.",
+                    icon: "success",
+                })
+            }
+        })
+    }
+
 
     return (
         <>
+            {/* loader*/}
 
-            {/* Delete */}
-            {showConfirm && (
-                <div className='absolute  w-full h-full z-100'>
-                    <div
-                        className='relative w-75 top-[50%] left-[40%] bg-[white] px-10 py-10 z-100 text-center flex flex-col rounded-[10px]'>
-                        <p>Are You Sure?</p>
-                        <div className='flex gap-2 mt-4 justify-center'>
-                            <button className='yesBtn bg-red-400 rounded-[5px] cursor-pointer px-5 text-white py-1' onClick={() => {
-                                deleteTodo(deleteId)
-                                setShowConfirm(false)
-                            }}>Delete</button>
-                            <button className='noBtn bg-green-400 rounded-[5px] cursor-pointer px-5 text-white py-1' onClick={() => setShowConfirm(false)}>Cancel</button>
-                        </div>
+            {loading && (
+                <div className='absolute inset-0 h-screen w-scrren z-100 bg-white'>
+                    <div className='absolute z-100 top-[50%] left-[45%]'>
+                        <Rings
+                            visible={true}
+                            height="80"
+                            width="80"
+                            color="#4fa94d"
+                            ariaLabel="rings-loading"
+                            wrapperStyle={{}}
+                            wrapperClass=""
+                        />
                     </div>
-                </div >
-
+                </div>
             )}
 
-            {/* Loader */}
-            <div className='goo'>
-                <div className="loader"></div>
-            </div>
             {/* Video */}
-            <video autoPlay loop playsInline muted className="absolute inset-0 h-full w-full object-cover -z-100">
+            <video autoPlay loop playsInline muted className="absolute inset-0 h-full w-full object-cover z-0">
                 <source src={ChillhopVideo} type="video/mp4" />
             </video>
 
-            <div className="container text-white w-full">
-                <div className='wrapper relative z-10 flex flex-col items-center'>
+            {/* Main div */}
+            <div className="relative container text-white w-full">
+                <div className='wrapper relative z-20 flex flex-col items-center'>
                     <div className="head">
                         <h1 className='mt-14.5 mb-11 text-[36px] leading-[100%] tracking-[0] font-normal bg-[linear-gradient(20deg,_rgba(196, 86, 77, 1)_0%,_rgba(134, 75, 73, 1)_100%)] bg-clip-text  bg-white/30 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-12 py-1.5 max-w-sm' style={{ fontFamily: 'Baloo 2, sans-serif' }}
                         >TODO-List</h1>
                     </div>
                     {/* The data div */}
                     <div className="inputArea px-5 max-w-286 w-full flex">
-                        <input type="text" name='input'
+                        <input autoFocus type="text" name='input'
                             className='input focus:outline-none font-normal text-[20px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-153.5 h-15'
                             placeholder='Enter ToDo' value={value} onChange={(e) => { setValue(e.target.value) }} />
                         <button
                             className='addBtn cursor-pointer ml-2.5 font-normal text-[18px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-5'
                             onClick={handleAdd} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}
-                        >Add</button>
+                        >{editId ? 'Update' : 'Add'}</button>
                         <div>
                             <select name="" id="select"
                                 className='relative focus:outline-none appearance-none ml-11.5 w-87.5 h-15 font-normal text-[20px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 pl-6.25' onChange={(e) => setfiltered(e.target.value)} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}>
@@ -75,12 +110,16 @@ const ToDo = () => {
                     </div>
                     <div className="list">
                         <ul className='mt-18.5 break-word h-[63vh] overflow-auto flex flex-col items-start px-5'>{
-                            <List onDelete={(id) => {
-                                {
-                                    setDeleteId(id)
-                                    setShowConfirm(true)
-                                }
-                            }} />
+                            <List
+                                onDelete={(id) => handleDelete(id)}
+
+                                onEdit={(todo) => {
+                                    {
+                                        setValue(todo.text)
+                                        setEditId(todo)
+                                    }
+                                }}
+                            />
                         }</ul>
                     </div>
                 </div>
