@@ -4,12 +4,14 @@ import ChillhopVideo from '../assets/Chillhop.mp4';
 import Swal from 'sweetalert2'
 import { Rings } from 'react-loader-spinner'
 import List from "../Components/List"
+import Desc from './desc'
 
 const ToDo = () => {
     const [value, setValue] = useState('')
-    const { addTodo, setfiltered, deleteTodo, editTodo, setSortBy } = useTodos()
+    const { addTodo, setfiltered, deleteTodo, editTodo, setSortBy, editTodoDesc } = useTodos()
     const [editId, setEditId] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [openDescTodo, setOpenDescTodo] = useState(null)
 
     const handleAdd = () => {
         if (!value.trim()) {
@@ -104,7 +106,7 @@ const ToDo = () => {
 
                         <div>
                             <select name="" id="select"
-                                className='relative focus:outline-none appearance-none ml-11.5 w-50 h-15 font-normal text-[20px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 pl-6.25' onChange={(e) => setSortBy(e.target.value)} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}>
+                                className='relative focus:outline-none ml-11.5 w-50 h-15 font-normal text-[20px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 pl-3' onChange={(e) => setSortBy(e.target.value)} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}>
                                 <option className='Sort bg-black text-white' value="Sort">Sort By</option>
                                 <option className='alphabet bg-black text-white' value="alphabet">Alphabet</option>
                                 <option className='Last-Edited bg-black text-white' value="last-edited">
@@ -123,11 +125,26 @@ const ToDo = () => {
                                     setValue(todo.text)
                                     setEditId(todo)
                                 }}
+
+                                onEditDesc={(id, desc) => editTodoDesc(id, desc)}
                             />
-                        }</ul>
+                        }
+                        </ul>
+                    </div>
+                    {/* Description */}
+                    <div className=''>
+                        <Desc onEditDesc={(id, desc) => editTodoDesc(id, desc)} onEdit={(todo) => {
+                            setValue(todo.text)
+                            setEditId(todo)
+                        }}
+                            todo={(todo) => {
+                                setValue(todo.text)
+                                setValue(todo.desc)
+                            }}
+                        />
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

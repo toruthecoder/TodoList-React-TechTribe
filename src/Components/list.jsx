@@ -1,10 +1,12 @@
 import { useTodos } from "../context/todoContext";
+import Desc from './desc'
 import Trash from '../assets/trash-solid-full.svg'
 import { useState } from 'react'
 
-const List = ({ onDelete, onEdit }) => {
+const List = ({ onDelete, onEdit, onEditDesc }) => {
     const { todos, toggleTodos } = useTodos()
     const [expand, setExpand] = useState(null)
+    const [openDescTodo, setOpenDescTodo] = useState(null)
 
     const getTimeAgo = (timestamp) => {
         const now = Date.now();
@@ -32,13 +34,12 @@ const List = ({ onDelete, onEdit }) => {
         return `${days} days ago`;
     };
 
-
     return (
         <>
             {
                 // Mapping the todos
                 todos.map((todo) => (
-                    <li key={todo.id} className="text-white border mt-5 bg-white/10 backdrop-blur-[32px] rounded-[85px] shadow-xl border-white/20 p-2 px-10 py-4" style={{
+                    <li key={todo.id} className="text-white border mt-5 bg-white/10 backdrop-blur-[32px] rounded-[85px] shadow-xl border-white/20 p-2 px-10 py-4 z-0" style={{
                         fontFamily: 'Baloo Tammudu 2, sans-serif'
                     }}>
                         <div className='font-normal text-[30px] leading-[100%] tracking-0 flex flex-row items-start justify-between w-[735px]  break-word ' style={{
@@ -47,10 +48,19 @@ const List = ({ onDelete, onEdit }) => {
                             {/* OnClick send the edit data */}
                             <span
                                 className={`cursor-pointer text-[26px] max-w-119.25 w-full break-words block ${todo.completed ? 'line-through' : ''}`}
-                                onClick={() => onEdit(todo)}
+                                onClick={() => setOpenDescTodo(todo)}
                             >
                                 {/* Check if the editid match the todoid and then handle the data or sliced data accordingly */}
                                 {expand === todo.id ? todo.text : todo.text.slice(0, 30)}
+                                {openDescTodo?.id === todo.id && (
+                                    <Desc
+                                        todo={openDescTodo}
+                                        onEditTitle={onEdit}
+                                        onEditDesc={onEditDesc}
+                                        onClose={() => setOpenDescTodo(null)}
+                                    />
+                                )}
+
                             </span>
                             {/* Checking if the data is sliced or not and showmore and less accordingly */}
                             {todo.text.length > 30 && (
@@ -59,17 +69,21 @@ const List = ({ onDelete, onEdit }) => {
                                 >
                                     {expand === todo.id ? 'Show Less' : 'Show More'}
                                 </span>
-
                             )}
-                            <div className='flex items-center justify-center gap-2'>
+
+
+                            {/* This is the trash input */}
+                            <div className='flex items-center justify-center gap-2' >
                                 <input type="checkbox" className='inputCheck cursor-pointer w-[18px] h-[18px] appearance-none rounded-lg bg-white' checked={todo.completed} onChange={() => toggleTodos(todo.id)} />
                                 <button className="delBtn cursor-pointer" onClick={() => onDelete(todo.id)} >
                                     <img src={Trash} className='w-7.5' />
                                 </button>
                             </div>
                         </div>
-                        <div>
-                            <p className="text-[12px]">Last-created: {getTimeAgo(todo.lastCreated)} -- Last-Edit: {getTimeAgo(todo.lastEdit)}</p>
+
+                        {/* This is the last-edit and last-created section */}
+                        <div >
+                            <p className="mt-4 text-[12px]">Last-created: {getTimeAgo(todo.lastCreated)} -- Last-Edited: {todo.lastEdit ? getTimeAgo(todo.lastEdit) : 'Never'}</p>
                         </div>
                     </li >
                 ))

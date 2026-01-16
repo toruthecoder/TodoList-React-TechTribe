@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { TodoContext } from "../context/todoContext";
 
 export const TodoProvider = ({ children }) => {
+
     const [todos, setTodos] = useState(() => {
         const storeTodos = localStorage.getItem('todos')
         const parsedTodos = storeTodos ? JSON.parse(storeTodos) : []
@@ -16,11 +17,35 @@ export const TodoProvider = ({ children }) => {
         console.log(`This is data from setLocal`, todos)
     }, [todos])
 
+    // Filter & Sort 
+    const FS = useMemo(() => {
+        // First clone the array/todos
+        let result = [...todos]
+
+        if (filtered === 'complete') return result = result.filter((todo) => todo.completed)
+        if (filtered === 'incomplete') return result = result.filter(todo => !todo.completed)
+
+        switch (sortBy) {
+            case 'alphabet':
+                result = result.sort((a, b) => a.text.localeCompare(b.text))
+                break;
+            case 'last-edited':
+                result = result.sort((a, b) => b.lastEdit - a.lastEdit)
+                break;
+            case 'recently-created':
+                result = result.sort((a, b) => b.lastCreated - a.lastCreated)
+                break;
+            default:
+                break;
+        }
+        return result
+    }, [todos, filtered, sortBy])
+
     // Add/Create Todo 
-    const addTodo = (text) => {
+    const addTodo = (text, desc) => {
         // setting up the create of todos by using setTodos keeping track of every item by using special id and setting text and checked state
         setTodos(previous => [
-            ...previous, { id: Date.now(), text, completed: false, lastCreated: Date.now(), lastEdit: Date.now() }
+            ...previous, { id: Date.now(), text, completed: false, lastCreated: Date.now(), desc }
         ])
     }
 
@@ -42,27 +67,15 @@ export const TodoProvider = ({ children }) => {
         setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo))
     }
 
-    // Filter Todo
-    const filterdTodos = todos.filter(todo => {
-        if (filtered === 'complete') return todo.completed
-        if (filtered === 'incomplete') return !todo.completed
-        return true
-    })
-
-    // Sort todo
-    const sortTodos = todos.sort((a, b) => {
-        if (sortBy === 'Sort') return a.todo
-        if (sortBy === 'alphabet') return a.text.localeCompare(b.text)
-        if (sortBy === 'last-edited') return b.lastEdit - a.lastEdit
-        if (sortBy === 'recently-created') return b.lastCreated - a.lastCreated
-        return 0
-    })
-
+    // Edit Todo Description
+    const editTodoDesc = (id, newDesc) => {
+        setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, desc: newDesc, lastEdit: Date.now() } : todo))
+    }
 
     const value = {
-        todos: sortTodos,
-        // todos: filterdTodos,
+        todos: FS,
         addTodo,
+        editTodoDesc,
         editTodo,
         deleteTodo,
         toggleTodos,
