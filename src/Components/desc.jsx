@@ -16,12 +16,12 @@ const Desc = ({ todo, onEdit, onClose, onSave, ref }) => {
                     </button>
 
                     <h2 className="text-lg font-semibold mb-2 text-white">Title</h2>
-                    <h1
-                        className="text-xl font-semibold mb-3 cursor-pointer text-white text-white border-none bg-white/10 rounded-[3px] px-2 py-2"
+                    <textarea
+                        className="text-xl font-semibold mb-3 cursor-pointer text-white text-white border-none bg-white/10 rounded-[3px] px-2 py-2 resize-none outline-none w-[350px] h-[50px]"
                         onClick={() => onEdit(todo)}
                     >
                         {todo.text}
-                    </h1>
+                    </textarea>
 
                     <h2 className="text-lg font-semibold mb-2 text-white">Description</h2>
 
