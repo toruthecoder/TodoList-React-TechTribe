@@ -1,5 +1,5 @@
 import { useTodos } from "../context/todoContext";
-import Desc from './desc'
+import SML from '../Components/SML'
 import Trash from '../assets/trash-solid-full.svg'
 import { useState } from 'react'
 
@@ -41,7 +41,7 @@ const List = ({ onDelete, openDescTodo }) => {
                     <li key={todo.id} className="text-white border mt-5 bg-white/10 backdrop-blur-[32px] rounded-[85px] shadow-xl border-white/20 p-2 px-10 py-4 z-0" style={{
                         fontFamily: 'Baloo Tammudu 2, sans-serif'
                     }}>
-                        <div className="flex items-start justify-between w-183.75 ">
+                        <div className="flex items-start justify-between w-185.75 ">
                             <div className='font-normal text-[30px] leading-[100%] tracking-0 flex flex-col items-start justify-between w-120.75  break-word ' style={{
                                 fontFamily: 'Baloo Tammudu 2, sans-serif'
                             }}>
@@ -51,26 +51,25 @@ const List = ({ onDelete, openDescTodo }) => {
                                     onClick={() => openDescTodo(todo)}
                                 >
                                     {/* Check if the editid match the todoid and then handle the data or sliced data accordingly */}
-                                    {expand === todo.id ? todo.text : todo.text.slice(0, 30)}
+                                    <SML text={todo.text} />
                                 </span>
 
                                 {/* Description text */}
                                 <span onClick={() => openDescTodo(todo)} className="cursor-pointer text-[14px]">
                                     {/* The || is for desc that is empty because if I dont define it like this it gives me undefined*/}
-                                    {(todo.desc || "").length < 20 ? (todo.desc || "") : (todo.desc || "").slice(0, 70) + '...'}
+                                    {(todo.desc || "").length < 20 ? (todo.desc || "") : (todo.desc || "").slice(0, 60) + '...'}
+
                                 </span>
                             </div>
 
-
                             {/* Checking if the data is sliced or not and showmore and less accordingly */}
-                            {todo.text.length > 30 && (
-                                <span className='text-[14px] text-white underline mr-9 cursor-pointer hover:text-gray-300 w-22.5'
+                            {/* {todo.text.length > 35 && (
+                                <span className='text-[14px] text-white underline mr-22 cursor-pointer hover:text-gray-300 w-22.5'
                                     onClick={() => setExpand(expand === todo.id ? null : todo.id)}
                                 >
                                     {expand === todo.id ? 'Show Less' : 'Show More'}
                                 </span>
-                            )}
-
+                            )} */}
 
                             {/* This is the trash input */}
                             <div className='flex items-center justify-center gap-2' >
