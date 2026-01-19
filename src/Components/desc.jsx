@@ -17,7 +17,7 @@ const Desc = ({ todo, onEdit, onClose, onSave, ref }) => {
 
                     <h2 className="text-lg font-semibold mb-2 text-white">Title</h2>
                     <textarea
-                        className="text-xl font-semibold mb-3 cursor-pointer text-white text-white border-none bg-white/10 rounded-[3px] px-2 py-2 resize-none outline-none w-[350px] h-[50px]"
+                        className="text-xl font-semibold mb-3 cursor-pointer text-white text-white border-none bg-white/10 rounded-[3px] px-2 py-2 resize-none outline-none w-[350px]"
                         onClick={() => onEdit(todo)}
                     >
                         {todo.text}

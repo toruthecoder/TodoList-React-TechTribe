@@ -41,27 +41,36 @@ const List = ({ onDelete, openDescTodo }) => {
                     <li key={todo.id} className="text-white border mt-5 bg-white/10 backdrop-blur-[32px] rounded-[85px] shadow-xl border-white/20 p-2 px-10 py-4 z-0" style={{
                         fontFamily: 'Baloo Tammudu 2, sans-serif'
                     }}>
-                        <div className='font-normal text-[30px] leading-[100%] tracking-0 flex flex-row items-start justify-between w-183.75  break-word ' style={{
-                            fontFamily: 'Baloo Tammudu 2, sans-serif'
-                        }}>
-                            {/* OnClick send the edit data */}
-                            <span
-                                className={`cursor-pointer text-[26px] max-w-119.25 w-full break-words block ${todo.completed ? 'line-through' : ''}`}
-                                onClick={() => openDescTodo(todo)}
-                            >
-                                {/* Check if the editid match the todoid and then handle the data or sliced data accordingly */}
-                                {expand === todo.id ? todo.text : todo.text.slice(0, 30)}
-                            </span>
-                            {/* Checking if the data is sliced or not and showmore and less accordingly */}
-                            {todo.text.length > 30 && (
-                                <span className='text-[14px] text-white underline cursor-pointer hover:text-gray-300 w-22.5'
-                                    onClick={() => setExpand(expand === todo.id ? null : todo.id)}
+                        <div className="flex items-start">
+                            <div className='font-normal text-[30px] leading-[100%] tracking-0 flex flex-col items-start justify-between w-183.75  break-word ' style={{
+                                fontFamily: 'Baloo Tammudu 2, sans-serif'
+                            }}>
+
+                                {/* OnClick send the edit data */}
+                                <span
+                                    className={`cursor-pointer text-[26px] max-w-119.25 w-full break-words block ${todo.completed ? 'line-through' : ''}`}
+                                    onClick={() => openDescTodo(todo)}
                                 >
-                                    {expand === todo.id ? 'Show Less' : 'Show More'}
+                                    {/* Check if the editid match the todoid and then handle the data or sliced data accordingly */}
+                                    {expand === todo.id ? todo.text : todo.text.slice(0, 30)}
                                 </span>
-                            )}
 
+                                {/* Checking if the data is sliced or not and showmore and less accordingly */}
+                                {todo.text.length > 30 && (
+                                    <span className='text-[14px] text-white underline cursor-pointer hover:text-gray-300 w-22.5'
+                                        onClick={() => setExpand(expand === todo.id ? null : todo.id)}
+                                    >
+                                        {expand === todo.id ? 'Show Less' : 'Show More'}
+                                    </span>
+                                )}
 
+                                {/* Description text */}
+                                <span onClick={() => openDescTodo(todo)} className="cursor-pointer text-[14px]">
+                                    {/* The || is for desc that is empty because if I dont define it like this it gives me undefined*/}
+                                    {(todo.desc || "").length < 20 ? (todo.desc || "Write a Description") : (todo.desc || "").slice(0, 20) + '...'}
+                                </span>
+
+                            </div>
                             {/* This is the trash input */}
                             <div className='flex items-center justify-center gap-2' >
                                 <input type="checkbox" className='inputCheck cursor-pointer w-4.5 h-4.5 appearance-none rounded-lg bg-white' checked={todo.completed} onChange={() => toggleTodos(todo.id)} />
