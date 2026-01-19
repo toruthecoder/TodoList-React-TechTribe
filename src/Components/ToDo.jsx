@@ -1,5 +1,5 @@
 import { useTodos } from '../context/todoContext'
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ChillhopVideo from '../assets/Chillhop.mp4';
 import Swal from 'sweetalert2'
 import { Rings } from 'react-loader-spinner'
@@ -12,6 +12,18 @@ const ToDo = () => {
     const [editId, setEditId] = useState(null)
     const [loading, setLoading] = useState(true)
     const [openDescTodo, setOpenDescTodo] = useState(null)
+    const descRef = useRef(null)
+
+    const closeDesc = (e) => {
+        if (descRef.current && !descRef.current.contains(e.target)) {
+            setOpenDescTodo(null)
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('mousedown', closeDesc)
+        return () => { window.removeEventListener('mousedown', closeDesc) }
+    }, [])
 
     const handleAdd = () => {
         if (!value.trim()) {
@@ -129,10 +141,10 @@ const ToDo = () => {
 
 
                     {/* Description */}
-
                     <div className=''>
                         {openDescTodo && (
                             <Desc
+                                ref={descRef}   
                                 todo={openDescTodo}
                                 onEdit={(todo) => {
                                     setValue(todo.text)

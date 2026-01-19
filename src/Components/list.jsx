@@ -73,7 +73,7 @@ const List = ({ onDelete, openDescTodo }) => {
 
                         {/* This is the last-edit and last-created section */}
                         <div >
-                            <p className="mt-4 text-[12px]">Last-created: {getTimeAgo(todo.lastCreated)} -- Last-Edited: {todo.lastEdit ? getTimeAgo(todo.lastEdit) : 'Never'}</p>
+                            <p className="mt-1 text-[12px]">Last-created: {getTimeAgo(todo.lastCreated)} -- Last-Edited: {todo.lastEdit ? getTimeAgo(todo.lastEdit) : 'Never'}</p>
                         </div>
                     </li >
                 ))
