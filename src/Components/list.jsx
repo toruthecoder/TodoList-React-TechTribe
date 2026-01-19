@@ -67,7 +67,7 @@ const List = ({ onDelete, openDescTodo }) => {
                                 {/* Description text */}
                                 <span onClick={() => openDescTodo(todo)} className="cursor-pointer text-[14px]">
                                     {/* The || is for desc that is empty because if I dont define it like this it gives me undefined*/}
-                                    {(todo.desc || "").length < 20 ? (todo.desc || "Write a Description") : (todo.desc || "").slice(0, 20) + '...'}
+                                    {(todo.desc || "").length < 20 ? (todo.desc || "No Description") : (todo.desc || "").slice(0, 70) + '...'}
                                 </span>
 
                             </div>

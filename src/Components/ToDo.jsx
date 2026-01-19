@@ -152,12 +152,8 @@ const ToDo = () => {
                             <Desc
                                 ref={descRef}
                                 todo={openDescTodo}
-                                onEdit={(todo) => {
-                                    setValue(todo.text)
-                                    setEditId(todo)
-                                    setOpenDescTodo(null)
-                                }}
-                                onSave={(id, desc) => {
+                                onSave={(id, desc, text) => {
+                                    editTodo(id, text)
                                     editTodoDesc(id, desc)
                                     setOpenDescTodo(null)
                                 }}

@@ -22,9 +22,11 @@ export const TodoProvider = ({ children }) => {
         // First clone the array/todos
         let result = [...todos]
 
+        // For Filter
         if (filtered === 'complete') return result = result.filter((todo) => todo.completed)
         if (filtered === 'incomplete') return result = result.filter(todo => !todo.completed)
 
+        // For sort
         switch (sortBy) {
             case 'alphabet':
                 result = result.sort((a, b) => a.text.localeCompare(b.text))
