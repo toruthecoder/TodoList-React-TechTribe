@@ -7,23 +7,28 @@ import List from "../Components/List"
 import Desc from './desc'
 
 const ToDo = () => {
+    // Use States and refs
     const [value, setValue] = useState('')
     const { addTodo, setfiltered, deleteTodo, editTodo, setSortBy, editTodoDesc } = useTodos()
     const [editId, setEditId] = useState(null)
     const [loading, setLoading] = useState(true)
     const [openDescTodo, setOpenDescTodo] = useState(null)
     const descRef = useRef(null)
+    const inputRef = useRef(null)
+
+
+    // Functions
+    const handleFocus = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }
 
     const closeDesc = (e) => {
         if (descRef.current && !descRef.current.contains(e.target)) {
             setOpenDescTodo(null)
         }
     }
-
-    useEffect(() => {
-        window.addEventListener('mousedown', closeDesc)
-        return () => { window.removeEventListener('mousedown', closeDesc) }
-    }, [])
 
     const handleAdd = () => {
         if (!value.trim()) {
@@ -38,6 +43,14 @@ const ToDo = () => {
             setValue('')
         }
     }
+
+    // Use Effects
+
+    useEffect(() => {
+        window.addEventListener('mousedown', closeDesc)
+        return () => { window.removeEventListener('mousedown', closeDesc) }
+    }, [])
+
 
     // Creating handleDelete function for 
     const handleDelete = (id) => {
@@ -62,7 +75,7 @@ const ToDo = () => {
         })
     }
 
-
+    // Return function
     return (
         <>
             {/* loader*/}
@@ -100,7 +113,7 @@ const ToDo = () => {
                     <div className="inputArea px-5 max-w-286 w-full flex">
                         <input autoFocus type="text" name='input'
                             className='input focus:outline-none font-normal text-[20px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-153.5 h-15'
-                            placeholder='Enter ToDo' value={value} onChange={(e) => { setValue(e.target.value) }} onInput={(e) => e.autoFocus} />
+                            placeholder='Enter ToDo' value={value} onChange={(e) => { setValue(e.target.value) }} ref={inputRef} />
                         <button
                             className='addBtn cursor-pointer ml-2.5 font-normal text-[18px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-5'
                             onClick={handleAdd} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}
@@ -141,10 +154,10 @@ const ToDo = () => {
 
 
                     {/* Description */}
-                    <div className=''>
+                    <div className='' onClick={handleFocus}>
                         {openDescTodo && (
                             <Desc
-                                ref={descRef}   
+                                ref={descRef}
                                 todo={openDescTodo}
                                 onEdit={(todo) => {
                                     setValue(todo.text)
