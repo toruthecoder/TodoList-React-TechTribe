@@ -6,7 +6,7 @@ const SML = ({ text }) => {
     const [shouldCut, setShouldCut] = useState(false);
 
     useEffect(() => {
-        setShouldCut(text.length > 100);
+        setShouldCut(text.length > 30);
     }, [text]);
 
     const handleClick = (e) => {
@@ -20,7 +20,7 @@ const SML = ({ text }) => {
                 {isExpanded || !shouldCut ? text : text.substring(0, 30) + '...'}
                 {shouldCut && (
                     <span
-                        className="text-[12px] ml-1 underline text-white-800 hover:text-white-700 cursor-pointer"
+                        className="text-[11px] ml-0 underline text-white-800 hover:text-white-700 cursor-pointer"
                         onClick={handleClick}
                     >
                         {isExpanded ? "Show Less" : "Show More"}
