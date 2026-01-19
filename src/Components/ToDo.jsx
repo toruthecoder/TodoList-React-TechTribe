@@ -93,9 +93,10 @@ const ToDo = () => {
                             className='addBtn cursor-pointer ml-2.5 font-normal text-[18px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-5'
                             onClick={handleAdd} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}
                         >{editId ? 'Update' : 'Add'}</button>
+
                         <div>
                             <select name="" id="select"
-                                className='relative focus:outline-none appearance-none ml-11.5 w-87.5 h-15 font-normal text-[20px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 pl-6.25' onChange={(e) => setfiltered(e.target.value)} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}>
+                                className='relative focus:outline-none appearance-none ml-11.5 w-65.5 h-15 font-normal text-[20px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 pl-6.25' onChange={(e) => setfiltered(e.target.value)} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}>
                                 <option className='all bg-black text-white' value="all">All</option>
                                 <option className='complete bg-black text-white' value="complete">
                                     Completed</option>
@@ -120,29 +121,37 @@ const ToDo = () => {
                         <ul className='mt-18.5 break-word h-[63vh] overflow-auto flex flex-col items-start px-5'>{
                             <List
                                 onDelete={(id) => handleDelete(id)}
-
                                 onEdit={(todo) => {
                                     setValue(todo.text)
                                     setEditId(todo)
                                 }}
-
-                                onEditDesc={(id, desc) => editTodoDesc(id, desc)}
+                                openDescTodo={todo => setOpenDescTodo(todo)}
                             />
                         }
                         </ul>
                     </div>
+
+
                     {/* Description */}
+
                     <div className=''>
-                        <Desc onEditDesc={(id, desc) => editTodoDesc(id, desc)} onEdit={(todo) => {
-                            setValue(todo.text)
-                            setEditId(todo)
-                        }}
-                            todo={(todo) => {
-                                setValue(todo.text)
-                                setValue(todo.desc)
-                            }}
-                        />
+                        {openDescTodo && (
+                            <Desc
+                                todo={openDescTodo}
+                                onEdit={(todo) => {
+                                    setValue(todo.text)
+                                    setEditId(todo)
+                                    setOpenDescTodo(null)
+                                }}
+                                onSave={(id, desc) => {
+                                    editTodoDesc(id, desc)
+                                    setOpenDescTodo(null)
+                                }}
+                                onClose={() => setOpenDescTodo(null)}
+                            />
+                        )}
                     </div>
+
                 </div>
             </div >
         </>

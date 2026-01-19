@@ -3,10 +3,9 @@ import Desc from './desc'
 import Trash from '../assets/trash-solid-full.svg'
 import { useState } from 'react'
 
-const List = ({ onDelete, onEdit, onEditDesc }) => {
+const List = ({ onDelete, openDescTodo }) => {
     const { todos, toggleTodos } = useTodos()
     const [expand, setExpand] = useState(null)
-    const [openDescTodo, setOpenDescTodo] = useState(null)
 
     const getTimeAgo = (timestamp) => {
         const now = Date.now();
@@ -48,19 +47,10 @@ const List = ({ onDelete, onEdit, onEditDesc }) => {
                             {/* OnClick send the edit data */}
                             <span
                                 className={`cursor-pointer text-[26px] max-w-119.25 w-full break-words block ${todo.completed ? 'line-through' : ''}`}
-                                onClick={() => setOpenDescTodo(todo)}
+                                onClick={() => openDescTodo(todo)}
                             >
                                 {/* Check if the editid match the todoid and then handle the data or sliced data accordingly */}
                                 {expand === todo.id ? todo.text : todo.text.slice(0, 30)}
-                                {openDescTodo?.id === todo.id && (
-                                    <Desc
-                                        todo={openDescTodo}
-                                        onEditTitle={onEdit}
-                                        onEditDesc={onEditDesc}
-                                        onClose={() => setOpenDescTodo(null)}
-                                    />
-                                )}
-
                             </span>
                             {/* Checking if the data is sliced or not and showmore and less accordingly */}
                             {todo.text.length > 30 && (
