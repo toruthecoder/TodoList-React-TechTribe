@@ -88,7 +88,7 @@ const ToDo = () => {
                     <div className="inputArea px-5 max-w-286 w-full flex">
                         <input autoFocus type="text" name='input'
                             className='input focus:outline-none font-normal text-[20px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-153.5 h-15'
-                            placeholder='Enter ToDo' value={value} onChange={(e) => { setValue(e.target.value) }} />
+                            placeholder='Enter ToDo' value={value} onChange={(e) => { setValue(e.target.value) }} onInput={(e) => e.autoFocus} />
                         <button
                             className='addBtn cursor-pointer ml-2.5 font-normal text-[18px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-5'
                             onClick={handleAdd} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}
@@ -121,10 +121,6 @@ const ToDo = () => {
                         <ul className='mt-18.5 break-word h-[63vh] overflow-auto flex flex-col items-start px-5'>{
                             <List
                                 onDelete={(id) => handleDelete(id)}
-                                onEdit={(todo) => {
-                                    setValue(todo.text)
-                                    setEditId(todo)
-                                }}
                                 openDescTodo={todo => setOpenDescTodo(todo)}
                             />
                         }
