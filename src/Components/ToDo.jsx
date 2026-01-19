@@ -96,7 +96,7 @@ const ToDo = () => {
             </video>
 
             {/* Main div */}
-            <div className="relative container text-white w-full">
+            <div className="container text-white w-full">
                 <div className='wrapper relative z-20 flex flex-col items-center'>
                     <div className="head">
                         <h1 className='mt-14.5 mb-11 text-[36px] leading-[100%] tracking-[0] font-normal bg-[linear-gradient(20deg,_rgba(196, 86, 77, 1)_0%,_rgba(134, 75, 73, 1)_100%)] bg-clip-text  bg-white/30 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-12 py-1.5 max-w-sm' style={{ fontFamily: 'Baloo 2, sans-serif' }}
