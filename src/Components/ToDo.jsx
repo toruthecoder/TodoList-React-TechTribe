@@ -14,16 +14,9 @@ const ToDo = () => {
     const [loading, setLoading] = useState(true)
     const [openDescTodo, setOpenDescTodo] = useState(null)
     const descRef = useRef(null)
-    const inputRef = useRef(null)
 
 
     // Functions
-    const handleFocus = () => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    }
-
     const closeDesc = (e) => {
         if (descRef.current && !descRef.current.contains(e.target)) {
             setOpenDescTodo(null)
@@ -113,7 +106,7 @@ const ToDo = () => {
                     <div className="inputArea px-5 max-w-286 w-full flex">
                         <input autoFocus type="text" name='input'
                             className='input focus:outline-none font-normal text-[20px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-153.5 h-15'
-                            placeholder='Enter ToDo' value={value} onChange={(e) => { setValue(e.target.value) }} ref={inputRef} />
+                            placeholder='Enter ToDo' value={value} onChange={(e) => { setValue(e.target.value) }} />
                         <button
                             className='addBtn cursor-pointer ml-2.5 font-normal text-[18px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-5'
                             onClick={handleAdd} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}
@@ -154,7 +147,7 @@ const ToDo = () => {
 
 
                     {/* Description */}
-                    <div className='' onClick={handleFocus}>
+                    <div className=''>
                         {openDescTodo && (
                             <Desc
                                 ref={descRef}
