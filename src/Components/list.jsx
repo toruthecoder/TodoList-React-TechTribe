@@ -1,11 +1,9 @@
 import { useTodos } from "../context/todoContext";
 import SML from '../Components/SML'
 import Trash from '../assets/trash-solid-full.svg'
-import { useState } from 'react'
 
 const List = ({ onDelete, openDescTodo }) => {
     const { todos, toggleTodos } = useTodos()
-    const [expand, setExpand] = useState(null)
 
     const getTimeAgo = (timestamp) => {
         const now = Date.now();
@@ -61,15 +59,6 @@ const List = ({ onDelete, openDescTodo }) => {
 
                                 </span>
                             </div>
-
-                            {/* Checking if the data is sliced or not and showmore and less accordingly */}
-                            {/* {todo.text.length > 35 && (
-                                <span className='text-[14px] text-white underline mr-22 cursor-pointer hover:text-gray-300 w-22.5'
-                                    onClick={() => setExpand(expand === todo.id ? null : todo.id)}
-                                >
-                                    {expand === todo.id ? 'Show Less' : 'Show More'}
-                                </span>
-                            )} */}
 
                             {/* This is the trash input */}
                             <div className='flex items-center justify-center gap-2' >
