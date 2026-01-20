@@ -45,7 +45,7 @@ const List = ({ onDelete, openDescTodo }) => {
                             }}>
                                 {/* OnClick send the edit data */}
                                 <span
-                                    className={`cursor-pointer text-[26px] max-w-119.25 w-full break-words block ${todo.completed ? 'line-through' : ''}`}
+                                    className={`cursor-pointer text-[26px] max-w-119.25 w-full break-words flex ${todo.completed ? 'line-through' : ''}`}
                                     onClick={() => openDescTodo(todo)}
                                 >
                                     {/* Check if the editid match the todoid and then handle the data or sliced data accordingly */}
