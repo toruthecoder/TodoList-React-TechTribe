@@ -16,7 +16,7 @@ const SML = ({ text }) => {
 
     return (
         <>
-            <p className="flex flex-row">
+            <p>
                 {isExpanded || !shouldCut ? text : text.substring(0, 30) + '...'}
                 {shouldCut && (
                     <span
