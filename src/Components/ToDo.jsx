@@ -54,19 +54,18 @@ const ToDo = () => {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
                 deleteTodo(id)
-
                 Swal.fire({
                     title: "Deleted!",
                     text: "Your todo has been deleted.",
-                    icon: "success",
-                })
+                    icon: "success"
+                });
             }
-        })
-    }
+        });
+    };
 
     // Return function
     return (
@@ -150,7 +149,7 @@ const ToDo = () => {
                     <div className=''>
                         {openDescTodo && (
                             <Desc
-                                ref={descRef}
+                                modelRef={descRef}
                                 todo={openDescTodo}
                                 onSave={(id, desc, text) => {
                                     editTodo(id, text)

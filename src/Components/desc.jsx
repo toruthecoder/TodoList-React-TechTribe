@@ -1,14 +1,44 @@
 import { useState } from 'react'
 import { RxCross2 } from "react-icons/rx";
+// import Swal from 'sweetalert2'
 
-const Desc = ({ todo, onClose, onSave, ref }) => {
-    const [tempDesc, setTempDesc] = useState(todo.desc || '')
-    const [tempText, setTempText] = useState(todo.text)
+const Desc = ({ todo, onClose, onSave, modelRef }) => {
+
+    const initialText = todo.text;
+    const [tempDesc, setTempDesc] = useState(todo.desc || '');
+    const [tempText, setTempText] = useState(initialText);
+
+    // const prevTextRef = useRef(initialText);
+
+
+    // function handleTitleChange(e) {
+    //     const newText = e.target.value;
+    //     if (newText.trim().length === 0) {
+    //         setTempText(prevTextRef.current);
+    //     } else {
+    //         setTempText(newText);
+    //         prevTextRef.current = newText;
+    //     }
+    // }
+
+    function handleSave() {
+        // if (!tempText || tempText.trim().length === 0) {
+        //     Swal.fire({
+        //         title: 'Cannot Save',
+        //         text: 'Todo title cannot be empty.',
+        //         icon: 'warning',
+        //         confirmButtonText: 'Close',
+        //     });
+        //     return;
+        // }
+        onSave(todo.id, tempDesc, tempText);
+        onClose();
+    }
 
     return (
         <>
             <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" >
-                <div className="w-100 z-50 text-black p-6 rounded-xl relative  bg-gray-500/30 backdrop-blur-lg rounded-xl shadow-xl border border-white/20" ref={ref}>
+                <div className="w-100 z-50 text-black p-6 rounded-xl relative  bg-gray-500/30 backdrop-blur-lg rounded-xl shadow-xl border border-white/20" ref={modelRef}>
                     <button
                         onClick={() => onClose()}
                         className="absolute top-2 right-3 text-2xl cursor-pointer text-white"
@@ -20,9 +50,9 @@ const Desc = ({ todo, onClose, onSave, ref }) => {
                     <textarea
                         value={tempText}
                         className="text-xl font-semibold mb-3 cursor-pointer text-white text-white border-none bg-white/10 rounded-[3px] px-2 py-2 resize-none outline-none w-[350px]"
-                        onChange={(e) => { setTempText(e.target.value) }}
+                        onChange={(e) => setTempText(e.target.value)}
                     >
-                        {todo.text}
+                        {todo.text || 'write text'}
                     </textarea>
 
                     <h2 className="text-lg font-semibold mb-2 text-white">Description</h2>
@@ -35,9 +65,7 @@ const Desc = ({ todo, onClose, onSave, ref }) => {
                         placeholder="Add description..."
                         className="w-full border text-sm px-2 py-1 rounded h-50 resize-none outline-none text-white border-none bg-white/10"
                     />
-                    <button onClick={() =>
-                        onSave(todo.id, tempDesc, tempText)
-                    }
+                    <button onClick={handleSave}
                         className='hover:bg-[#3085d6] text-white px-10 py-1 mt-2 rounded-[3px] cursor-pointer bg-white/10 backdrop-blur-lg shadow-xl'>
                         Save
                     </button>

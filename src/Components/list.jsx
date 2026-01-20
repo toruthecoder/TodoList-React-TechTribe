@@ -49,7 +49,7 @@ const List = ({ onDelete, openDescTodo }) => {
                                     onClick={() => openDescTodo(todo)}
                                 >
                                     {/* Check if the editid match the todoid and then handle the data or sliced data accordingly */}
-                                    <SML text={todo.text} />
+                                    <SML text={todo.text || 'Write Title'} />
                                 </span>
 
                                 {/* Description text */}
@@ -62,15 +62,17 @@ const List = ({ onDelete, openDescTodo }) => {
 
                             {/* This is the trash input */}
                             <div className='flex items-center justify-center gap-2' >
-                                <input type="checkbox" className='inputCheck cursor-pointer w-4.5 h-4.5 appearance-none rounded-lg bg-white' checked={todo.completed} onChange={() => toggleTodos(todo.id)} />
-                                <button className="delBtn cursor-pointer" onClick={() => onDelete(todo.id)} >
+                                <input type="checkbox" className='inputCheck cursor-pointer w-4.5 h-4.5 rounded-lg bg-white' checked={todo.completed} onChange={() => toggleTodos(todo.id)} />
+                                <button className="delBtn cursor-pointer" onClick={() => {
+                                    onDelete(todo.id);
+                                }} >
                                     <img src={Trash} className='w-7.5' />
                                 </button>
                             </div>
                         </div>
 
                         {/* This is the last-edit and last-created section */}
-                        <div >
+                        <div>
                             <p className="mt-1 text-[12px]">Last-created: {getTimeAgo(todo.lastCreated)} -- Last-Edited: {todo.lastEdit ? getTimeAgo(todo.lastEdit) : 'Never'}</p>
                         </div>
                     </li >
@@ -83,4 +85,4 @@ const List = ({ onDelete, openDescTodo }) => {
 
 export default List
 
-// Comment for simmulating push`
+// Comment for simmulating push

@@ -20,7 +20,7 @@ const SML = ({ text }) => {
                 {isExpanded || !shouldCut ? text : text.substring(0, 30) + '...'}
                 {shouldCut && (
                     <span
-                        className="text-[11px] ml-0 underline text-white-800 hover:text-white-700 cursor-pointer"
+                        className="text-[12px] truncate ml-[4px] text-white-800 hover:text-white-700 cursor-pointer"
                         onClick={handleClick}
                     >
                         {isExpanded ? "Show Less" : "Show More"}
