@@ -154,7 +154,6 @@ const ToDo = () => {
                                 onSave={(id, desc, text) => {
                                     editTodo(id, text)
                                     editTodoDesc(id, desc)
-                                    setOpenDescTodo(null)
                                 }}
                                 onClose={() => setOpenDescTodo(null)}
                             />
