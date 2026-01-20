@@ -17,7 +17,7 @@ const SML = ({ text }) => {
     return (
         <>
             <p>
-                {isExpanded || !shouldCut ? text : text.substring(0, 30) + '...'}
+                {isExpanded || !shouldCut ? text : text.substring(0, 30)}
                 {shouldCut && (
                     <span
                         className="text-[12px] truncate ml-[4px] text-white-800 hover:text-white-700 cursor-pointer"
