@@ -35,7 +35,7 @@ const List = ({ onDelete, openDescTodo }) => {
         <>
             {
                 // Mapping the todos
-                todos.map((todo) => (
+                todos?.map((todo) => (
                     <li key={todo.id} className="text-white border mt-5 bg-white/10 backdrop-blur-[32px] rounded-[85px] shadow-xl border-white/20 p-2 px-10 py-4 z-0" style={{
                         fontFamily: 'Baloo Tammudu 2, sans-serif'
                     }}>
