@@ -5,10 +5,12 @@ import Swal from 'sweetalert2'
 import { Rings } from 'react-loader-spinner'
 import List from "../Components/List"
 import Desc from './desc'
+import toast from 'react-hot-toast'
+import api from '../lib/axios.js'
 
 const ToDo = () => {
     // Use States and refs
-    const [value, setValue] = useState('')
+    const [title, setTitle] = useState('')
     const { addTodo, setfiltered, deleteTodo, editTodo, setSortBy, editTodoDesc } = useTodos()
     const [editId, setEditId] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -23,17 +25,27 @@ const ToDo = () => {
         }
     }
 
-    const handleAdd = () => {
-        if (!value.trim()) {
+    const handleAdd = async () => {
+        if (!title.trim()) {
+            toast.error(`todo title cannot be empty`)
             return
         }
         if (editId) {
-            editTodo(editId.id, value)
+            editTodo(editId.id, title)
             setEditId(null)
-            setValue('')
+            setTitle('')
         } else {
-            addTodo(value.trim())
-            setValue('')
+            addTodo(title.trim())
+            setTitle('')
+        }
+
+        // From Backend
+        try {
+            await api.post("/todos", { title })
+            toast.success(`Todo created successfully`)
+        } catch (error) {
+            console.error(`Error Creating the Todo`, error)
+            toast.error(`Todo Failed`)
         }
     }
 
@@ -43,7 +55,6 @@ const ToDo = () => {
         window.addEventListener('mousedown', closeDesc)
         return () => { window.removeEventListener('mousedown', closeDesc) }
     }, [])
-
 
     // Creating handleDelete function for 
     const handleDelete = (id) => {
@@ -55,7 +66,7 @@ const ToDo = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 deleteTodo(id)
                 Swal.fire({
@@ -105,7 +116,7 @@ const ToDo = () => {
                     <div className="inputArea px-5 max-w-286 w-full flex">
                         <input autoFocus type="text" name='input'
                             className='input focus:outline-none font-normal text-[20px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-153.5 h-15'
-                            placeholder='Enter ToDo' value={value} onChange={(e) => { setValue(e.target.value) }} />
+                            placeholder='Enter ToDo' value={title} onChange={(e) => { setTitle(e.target.value) }} />
                         <button
                             className='addBtn cursor-pointer ml-2.5 font-normal text-[18px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-5'
                             onClick={handleAdd} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}

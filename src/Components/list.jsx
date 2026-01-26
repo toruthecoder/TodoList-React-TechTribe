@@ -1,6 +1,8 @@
 import { useTodos } from "../context/todoContext";
 import SML from '../Components/SML'
 import Trash from '../assets/trash-solid-full.svg'
+import api from '../lib/axios.js'
+import toast from 'react-hot-toast'
 
 const List = ({ onDelete, openDescTodo }) => {
     const { todos, toggleTodos } = useTodos()
@@ -30,6 +32,16 @@ const List = ({ onDelete, openDescTodo }) => {
         // checking if the hours exceeds 24 then return days
         return `${days} days ago`;
     };
+
+    const Delete = async (todo) => {
+        try {
+            await api.delete(`/todos/${todo.id}`)
+            onDelete(todo.id)
+        } catch (error) {
+            console.log("Error in deleting Todo", error)
+            toast.error(`Failed to delete todo`)
+        }
+    }
 
     return (
         <>
@@ -65,7 +77,7 @@ const List = ({ onDelete, openDescTodo }) => {
                             <div className='flex items-center justify-center gap-2' >
                                 <input type="checkbox" className='inputCheck cursor-pointer w-4.5 h-4.5 rounded-lg bg-white' checked={todo.completed} onChange={() => toggleTodos(todo.id)} />
                                 <button className="delBtn cursor-pointer" onClick={() => {
-                                    onDelete(todo.id);
+                                    Delete(todo)
                                 }} >
                                     <img src={Trash} className='w-7.5' />
                                 </button>
