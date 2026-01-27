@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { RxCross2 } from "react-icons/rx";
 import Swal from 'sweetalert2';
+import toast from 'react-hot-toast'
+import api from '../lib/axios.js'
+
 
 const Desc = ({ todo, onClose, onSave, modelRef }) => {
 
-    const initialText = todo.text;
-    const [tempDesc, setTempDesc] = useState(todo.desc || '');
+    const initialText = todo.title;
+    const [tempDesc, setTempDesc] = useState(todo.content || '');
     const [tempText, setTempText] = useState(initialText);
 
-    function handleSave() {
+    const handleSave = async () => {
 
         if (!tempText && tempText.length === 0) {
             Swal.fire({
@@ -18,8 +21,19 @@ const Desc = ({ todo, onClose, onSave, modelRef }) => {
                 confirmButtonText: 'Close',
             });
         } else {
-            onSave(todo.id, tempDesc, tempText);
-            onClose()
+            try {
+                await api.put(`/todos/${todo.id}`, {
+                    title: tempText,
+                    content: tempDesc,
+                    lastEdit: new Date(todo.data.createdAt).getTime()
+                })
+                toast.success(`Todo Updated.`)
+                onSave(todo.id, tempDesc, tempText);
+                onClose()
+            } catch (error) {
+                console.error('Error Updating todo', error)
+                toast.error('Error Creating todo')
+            }
         }
 
     }
@@ -41,7 +55,7 @@ const Desc = ({ todo, onClose, onSave, modelRef }) => {
                         className="text-xl font-semibold mb-3 cursor-pointer text-white border-none bg-white/10 rounded-[3px] px-2 py-2 resize-none outline-none w-[350px]"
                         onChange={(e) => setTempText(e.target.value)}
                     >
-                        {todo.text}
+                        {todo.title}
                     </textarea>
 
                     <h2 className="text-lg font-semibold mb-2 text-white">Description</h2>

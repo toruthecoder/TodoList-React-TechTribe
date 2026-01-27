@@ -11,7 +11,7 @@ import api from '../lib/axios.js'
 const ToDo = () => {
     // Use States and refs
     const [title, setTitle] = useState('')
-    const { addTodo, setfiltered, deleteTodo, editTodo, setSortBy, editTodoDesc } = useTodos()
+    const { addTodo, todos, setfiltered, deleteTodo, editTodo, setSortBy, editTodoDesc } = useTodos()
     const [editId, setEditId] = useState(null)
     const [loading, setLoading] = useState(true)
     const [openDescTodo, setOpenDescTodo] = useState(null)
@@ -30,19 +30,32 @@ const ToDo = () => {
             toast.error(`todo title cannot be empty`)
             return
         }
-        if (editId) {
-            editTodo(editId.id, title)
-            setEditId(null)
-            setTitle('')
-        } else {
-            addTodo(title.trim())
-            setTitle('')
-        }
+        // if (editId) {
+        //     editTodo(editId.id, title)
+        //     setEditId(null)
+        //     setTitle('')
+        // } else {
+        //     addTodo(title.trim())
+        //     setTitle('')
+        // }
 
         // From Backend
         try {
-            await api.post("/todos", { title })
-            toast.success(`Todo created successfully`)
+            const res = await api.post("/todos", {
+                title: title,
+                content: '',
+            })
+
+            addTodo({
+                id: res.data._id,
+                title: res.data.title,
+                content: res.data.content,
+                completed: false,
+                lastCreated: new Date(res.data.createdAt).getTime(),
+                lastEdit: null,
+            })
+            setTitle('')
+            toast.success(`Todo created successfully.`)
         } catch (error) {
             console.error(`Error Creating the Todo`, error)
             toast.error(`Todo Failed`)

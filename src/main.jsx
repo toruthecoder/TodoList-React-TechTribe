@@ -4,12 +4,18 @@ import './index.css'
 import App from './App.jsx'
 import { TodoProvider } from './hooks/useTodo.jsx'
 import { Toaster } from 'react-hot-toast'
+import { BrowserRouter } from 'react-router-dom'
+import { CookiesProvider } from 'react-cookie'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <TodoProvider>
-      <App />
-      <Toaster />
-    </TodoProvider>
+    <BrowserRouter>
+      <CookiesProvider>
+        <TodoProvider>
+          <App />
+          <Toaster />
+        </TodoProvider>
+      </CookiesProvider>
+    </BrowserRouter>
   </StrictMode>,
 )
