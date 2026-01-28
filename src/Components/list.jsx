@@ -8,6 +8,8 @@ const List = ({ onDelete, openDescTodo }) => {
     const { todos, toggleTodos } = useTodos()
 
     const getTimeAgo = (timestamp) => {
+
+        if (!timestamp) return 'Never';
         const now = Date.now();
         // rounding the vlaue getting from the todoContext/useTodo into seconds
         const seconds = Math.floor((now - timestamp) / 1000);
@@ -33,9 +35,8 @@ const List = ({ onDelete, openDescTodo }) => {
         return `${days} days ago`;
     };
 
-    const Delete = async (todo) => {
+    const Delete = (todo) => {
         try {
-            await api.delete(`/todos/${todo.id}`)
             onDelete(todo.id)
         } catch (error) {
             console.log("Error in deleting Todo", error)
@@ -75,7 +76,19 @@ const List = ({ onDelete, openDescTodo }) => {
 
                             {/* This is the trash input */}
                             <div className='flex items-center justify-center gap-2' >
-                                <input type="checkbox" className='inputCheck cursor-pointer w-4.5 h-4.5 rounded-lg bg-white' checked={todo.completed} onChange={() => toggleTodos(todo.id)} />
+                                <input type="checkbox" className='inputCheck cursor-pointer w-4.5 h-4.5 rounded-lg bg-white' checked={todo.completed} onChange={async () => {
+                                    try {
+                                        await api.put(`/todos/${todo.id}`, {
+                                            title: todo.title,
+                                            content: todo.content,
+                                            completed: !todo.completed,
+                                        });
+                                        toggleTodos(todo.id);
+                                    } catch (error) {
+                                        toast.error("Failed to update todo");
+                                        console.error(error)
+                                    }
+                                }} />
                                 <button className="delBtn cursor-pointer" onClick={() => {
                                     Delete(todo)
                                 }} >
@@ -86,7 +99,7 @@ const List = ({ onDelete, openDescTodo }) => {
 
                         {/* This is the last-edit and last-created section */}
                         <div>
-                            <p className="mt-1 text-[12px]">Last-created: {getTimeAgo(todo.lastCreated)} -- Last-Edited: {todo.lastEdit ? getTimeAgo(todo.lastEdit) : 'Never'}</p>
+                            <p className="mt-1 text-[12px]">Last-created: {getTimeAgo(todo.createdAt)} -- Last-Edited: {todo.updatedAt ? getTimeAgo(todo.updatedAt) : 'Never'}</p>
                         </div>
                     </li >
                 ))

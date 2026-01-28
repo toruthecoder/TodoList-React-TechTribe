@@ -1,7 +1,9 @@
+import { useTodos } from '../context/todoContext.jsx'
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import api from '../lib/axios.js'
 import toast from 'react-hot-toast'
 import ToDo from '../Components/ToDo'
 
@@ -10,24 +12,44 @@ const Home = () => {
     const [cookies, removeCookie] = useCookies([])
     const [username, setUsername] = useState('')
     const [open, setOpen] = useState(false);
+    const [email, setEmail] = useState('');
+    const { setTodos, resetTodos } = useTodos()
+    // const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const verifyCookie = async () => {
-            if (!cookies.token) {
-                navigate('/login')
+
+            try {
+                const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/verify`, {}, { withCredentials: true });
+
+                setUsername(data.user);
+                setEmail(data.email);
+                // toast.success(`Hello ${data.user}`)
+
+                const todosData = await api.get(`/todos`, { withCredentials: true });
+                setTodos(todosData.data.map(todo => ({
+                    ...todo,
+                    id: todo._id,   // ✅ normalize here
+                }))
+                );
+
+                // setLoading(false)
+            } catch (error) {
+                console.log(error)
             }
-            const { data } = await axios.post("http://localhost:3002", {}, { withCredentials: true })
-            const { status, user } = data
-            setUsername(user)
-            return status ? toast.success(`Hello ${user}`) : (removeCookie("token"), navigate('/login'));
-        }
-        verifyCookie()
-    }, [cookies, navigate, removeCookie])
+        };
+        verifyCookie();
+    }, [cookies, navigate, setTodos]);
 
     const Logout = () => {
         removeCookie("token")
-        navigate('/signup')
+        resetTodos();
+        navigate('/login')
     }
+
+    // if (loading) {
+    //     return <p className="text-center mt-20 text-gray-500">Loading...</p>;
+    // }
 
     return (
         <div>
@@ -43,9 +65,10 @@ const Home = () => {
                 {open && (
                     <div
                         className="absolute top-15 right-0 w-62.5 p-3.75 bg-white rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.1)]">
-                        <p className="font-bold mb-2.5">
+                        <p className="font-bold mb-1">
                             {username}
                         </p>
+                        <p className="mb-2">{email}</p>
 
                         <button
                             onClick={Logout}

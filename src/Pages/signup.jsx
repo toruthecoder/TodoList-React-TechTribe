@@ -31,7 +31,7 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post("http://localhost:3002/signup", { ...inputValue, }, { withCredentials: true })
+            const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/signup`, { ...inputValue, }, { withCredentials: true })
             const { success, message } = data
             if (success) {
                 handleSuccess(message)
@@ -54,46 +54,46 @@ const Signup = () => {
 
     return (
         <div className="absolute flex items-center justify-center inset-0 bg-gradient-to-r from-slate-500 to-slate-800">
-            <div className='flex flex-col items-center pt-10 w-120 h-170 text-white bg-gray-500/40 backdrop-blur-lg rounded-xl shadow-xl border border-white/20'>
+            <div className='flex flex-col items-center pt-10 w-120 h-150 text-white bg-gray-500/40 backdrop-blur-lg rounded-xl shadow-xl border border-white/20'>
                 <h2 className='text-[30px] mb-5'>Signup Account</h2>
                 <form onSubmit={handleSubmit} className='flex flex-col'>
                     <div className='flex flex-col'>
-                        <label htmlFor="email" className='text-[23px]'>Email : </label>
+                        <label htmlFor="email" className='text-[16px]'>Email : </label>
                         <input
                             type="email"
                             name="email"
                             value={email}
-                            className='focus:outline-none font-normal text-[14px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-88 my-4 h-12'
+                            className='focus:outline-none font-normal text-[14px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-88 my-1 h-12'
                             placeholder="Enter your email"
                             onChange={handleChange}
                             required
                         />
                     </div>
                     <div className='flex flex-col mt-4'>
-                        <label htmlFor="email" className='text-[23px]'>Username : </label>
+                        <label htmlFor="email" className='text-[16px]'>Username : </label>
                         <input
                             type="text"
                             name="username"
                             value={username}
-                            className='focus:outline-none font-normal text-[14px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-90 my-4 h-12'
+                            className='focus:outline-none font-normal text-[14px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-90 my-1 h-12'
                             placeholder="Enter your username"
                             onChange={handleChange}
                             required
                         />
                     </div>
                     <div className='flex flex-col mt-4'>
-                        <label htmlFor="password" className='text-[23px]'>Password : </label>
+                        <label htmlFor="password" className='text-[16px]'>Password : </label>
                         <input
                             type="password"
                             name="password"
                             value={password}
-                            className='focus:outline-none font-normal text-[14px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-90 my-4 h-12'
+                            className='focus:outline-none font-normal text-[14px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-90 my-1 h-12'
                             placeholder="Enter your password"
                             onChange={handleChange}
                             required
                         />
                     </div>
-                    <button type="submit" className='cursor-pointer font-normal text-[18px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 py-1.5 mt-6'>Submit</button>
+                    <button type="submit" className='cursor-pointer font-normal text-[16px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 py-2 mt-9'>Submit</button>
                     <span className='mt-10 text-center'>
                         Already have an account? <Link to={"/login"} className='hover:text-black'>Login</Link>
                     </span>

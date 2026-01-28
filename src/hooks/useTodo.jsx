@@ -9,27 +9,27 @@ export const TodoProvider = ({ children }) => {
     const [filtered, setfiltered] = useState('all')
     const [sortBy, setSortBy] = useState('Sort')
 
+    const mapTodos = (todo) => ({
+        id: todo._id,
+        title: todo.title,
+        content: todo.content || "",
+        completed: todo.completed,
+        createdAt: todo.createdAt ? new Date(todo.createdAt).getTime() : Date.now(),
+        updatedAt: todo.updatedAt ? new Date(todo.updatedAt).getTime() : null,
+    });
+
     // get Local Todos from the backend
     useEffect(() => {
         const fetchTodos = async () => {
             try {
                 const res = await api.get("/todos")
-                const mapTodos = res.data.map((todo) => ({
-                    id: todo._id,
-                    title: todo.title,
-                    content: todo.content || '',
-                    completed: false,
-                    lastCreated: new Date(todo.createdAt).getTime(),
-                    lastEdit: new Date(todo.updatedAt).getTime() || null,
-                }))
-                setTodos(mapTodos)
+                setTodos(res.data.map(mapTodos));
             } catch (error) {
                 console.error(`Error Fetching the todos`, error)
             }
         }
         fetchTodos()
     }, [])
-
 
     // Filter & Sort 
     const FS = useMemo(() => {
@@ -46,16 +46,19 @@ export const TodoProvider = ({ children }) => {
                 result = [...result].sort((a, b) => a.title.localeCompare(b.title))
                 break;
             case 'last-edited':
-                result = [...result].sort((a, b) => b.lastEdit - a.lastEdit)
+                result = [...result].sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
                 break;
             case 'recently-created':
-                result = [...result].sort((a, b) => b.lastCreated - a.lastCreated)
+                result = [...result].sort((a, b) => b.createdAt - a.createdAt)
                 break;
             default:
                 break;
         }
         return result
     }, [todos, filtered, sortBy])
+
+    // To reset the todos 
+    const resetTodos = () => setTodos([]);
 
     // Add/Create Todo 
     const addTodo = (todo) => {
@@ -74,18 +77,18 @@ export const TodoProvider = ({ children }) => {
     // Edit/Update Todo
     const editTodo = (id, newText) => {
         // checking if the clicked text match the special id or not if it does change the text
-        setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, title: newText, lastEdit: Date.now() } : todo))
+        setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, title: newText, updatedAt: Date.now() } : todo))
     }
 
     // toggle Todos
     const toggleTodos = (id) => {
         // setting up the toggle todo when click on filter 
-        setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+        setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, completed: !todo.completed, updatedAt: Date.now(), } : todo))
     }
 
     // Edit Todo Description
     const editTodoDesc = (id, newDesc) => {
-        setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, content: newDesc, lastEdit: Date.now() } : todo))
+        setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, content: newDesc, updatedAt: Date.now() } : todo))
     }
 
     const value = {
@@ -96,7 +99,10 @@ export const TodoProvider = ({ children }) => {
         deleteTodo,
         toggleTodos,
         setfiltered,
-        setSortBy
+        setSortBy,
+        resetTodos,
+        setTodos,
+        mapTodos,
     }
 
     return (

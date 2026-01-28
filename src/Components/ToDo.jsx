@@ -11,7 +11,7 @@ import api from '../lib/axios.js'
 const ToDo = () => {
     // Use States and refs
     const [title, setTitle] = useState('')
-    const { addTodo, todos, setfiltered, deleteTodo, editTodo, setSortBy, editTodoDesc } = useTodos()
+    const { mapTodos, addTodo, todos, setfiltered, deleteTodo, editTodo, setSortBy, editTodoDesc } = useTodos()
     const [editId, setEditId] = useState(null)
     const [loading, setLoading] = useState(true)
     const [openDescTodo, setOpenDescTodo] = useState(null)
@@ -46,14 +46,7 @@ const ToDo = () => {
                 content: '',
             })
 
-            addTodo({
-                id: res.data._id,
-                title: res.data.title,
-                content: res.data.content,
-                completed: false,
-                lastCreated: new Date(res.data.createdAt).getTime(),
-                lastEdit: null,
-            })
+            addTodo(mapTodos(res.data))
             setTitle('')
             toast.success(`Todo created successfully.`)
         } catch (error) {
@@ -81,6 +74,7 @@ const ToDo = () => {
             confirmButtonText: "Yes, delete it!"
         }).then(async (result) => {
             if (result.isConfirmed) {
+                await api.delete(`/todos/${id}`)
                 deleteTodo(id)
                 Swal.fire({
                     title: "Deleted!",

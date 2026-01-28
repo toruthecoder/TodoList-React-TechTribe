@@ -7,8 +7,8 @@ import api from '../lib/axios.js'
 
 const Desc = ({ todo, onClose, onSave, modelRef }) => {
 
-    const initialText = todo.title;
-    const [tempDesc, setTempDesc] = useState(todo.content || '');
+    const initialText = todo?.title;
+    const [tempDesc, setTempDesc] = useState(todo?.content || '');
     const [tempText, setTempText] = useState(initialText);
 
     const handleSave = async () => {
@@ -25,7 +25,7 @@ const Desc = ({ todo, onClose, onSave, modelRef }) => {
                 await api.put(`/todos/${todo.id}`, {
                     title: tempText,
                     content: tempDesc,
-                    lastEdit: new Date(todo.data.createdAt).getTime()
+                    completed: todo.completed,
                 })
                 toast.success(`Todo Updated.`)
                 onSave(todo.id, tempDesc, tempText);
