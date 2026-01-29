@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import api from '../lib/axios.js'
-import toast from 'react-hot-toast'
+// import toast from 'react-hot-toast'
 import ToDo from '../Components/ToDo'
 
 const Home = () => {
@@ -14,7 +14,6 @@ const Home = () => {
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
     const { setTodos, resetTodos } = useTodos()
-    // const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const verifyCookie = async () => {
@@ -29,13 +28,13 @@ const Home = () => {
                 const todosData = await api.get(`/todos`, { withCredentials: true });
                 setTodos(todosData.data.map(todo => ({
                     ...todo,
-                    id: todo._id,   // ✅ normalize here
+                    id: todo._id,
                 }))
                 );
 
-                // setLoading(false)
             } catch (error) {
                 console.log(error)
+                return navigate('/login')
             }
         };
         verifyCookie();
@@ -46,10 +45,6 @@ const Home = () => {
         resetTodos();
         navigate('/login')
     }
-
-    // if (loading) {
-    //     return <p className="text-center mt-20 text-gray-500">Loading...</p>;
-    // }
 
     return (
         <div>

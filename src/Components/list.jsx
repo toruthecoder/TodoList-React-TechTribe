@@ -8,11 +8,10 @@ const List = ({ onDelete, openDescTodo }) => {
     const { todos, toggleTodos } = useTodos()
 
     const getTimeAgo = (timestamp) => {
-
-        if (!timestamp) return 'Never';
+        const time = new Date(timestamp).getTime();
         const now = Date.now();
         // rounding the vlaue getting from the todoContext/useTodo into seconds
-        const seconds = Math.floor((now - timestamp) / 1000);
+        const seconds = Math.floor((now - time) / 1000);
 
         // Checking if the rounded value is smaller then then 60 seconds and return
         if (seconds < 60) return `${seconds} seconds ago`;
@@ -99,7 +98,7 @@ const List = ({ onDelete, openDescTodo }) => {
 
                         {/* This is the last-edit and last-created section */}
                         <div>
-                            <p className="mt-1 text-[12px]">Last-created: {getTimeAgo(todo.createdAt)} -- Last-Edited: {todo.updatedAt ? getTimeAgo(todo.updatedAt) : 'Never'}</p>
+                            <p className="mt-1 text-[12px]">Last-created: {getTimeAgo(todo.createdAt)} -- Last-Edited: {todo.updatedAt === todo.createdAt ? 'Never' : getTimeAgo(todo.updatedAt)}</p>
                         </div>
                     </li >
                 ))
