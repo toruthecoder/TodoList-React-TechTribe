@@ -110,5 +110,3 @@ const List = ({ onDelete, openDescTodo }) => {
 }
 
 export default List
-
-// Comment for simmulating push
