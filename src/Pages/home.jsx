@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import api from '../lib/axios.js'
-// import toast from 'react-hot-toast'
 import ToDo from '../Components/ToDo'
+// import toast from 'react-hot-toast';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -20,20 +20,20 @@ const Home = () => {
 
             try {
                 const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/verify`, {}, { withCredentials: true });
+                // toast.success(`Hello ${data.user}`)
 
                 setUsername(data.user);
                 setEmail(data.email);
-                // toast.success(`Hello ${data.user}`)
 
                 const todosData = await api.get(`/todos`, { withCredentials: true });
                 setTodos(todosData.data.map(todo => ({
                     ...todo,
                     id: todo._id,
-                }))
-                );
+                })));
 
             } catch (error) {
                 console.log(error)
+                // toast.error(`error logging in`)
                 return navigate('/login')
             }
         };
