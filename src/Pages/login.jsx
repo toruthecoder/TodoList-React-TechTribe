@@ -32,7 +32,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/login`, { ...inputValue, }, { withCredentials: true })
+            const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/api/auth/login`, { ...inputValue, }, { withCredentials: true })
             const { success, message } = data
             if (success) {
                 handleSuccess(message)

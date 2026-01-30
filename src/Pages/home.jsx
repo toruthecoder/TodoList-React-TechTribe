@@ -19,7 +19,7 @@ const Home = () => {
         const verifyCookie = async () => {
 
             try {
-                const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/verify`, {}, { withCredentials: true });
+                const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/api/auth/verify`, {}, { withCredentials: true });
                 // toast.success(`Hello ${data.user}`)
 
                 setUsername(data.user);
