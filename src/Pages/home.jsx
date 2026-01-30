@@ -16,11 +16,16 @@ const Home = () => {
     const { setTodos, resetTodos } = useTodos()
 
     useEffect(() => {
+        axios.post('/api/auth/verify', {}, { withCredentials: true })
+            .then(() => navigate('/'))
+            .catch(() => { navigate('/login') });
+    }, [navigate]);
+
+    useEffect(() => {
         const verifyCookie = async () => {
 
             try {
                 const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/api/auth/verify`, {}, { withCredentials: true });
-                // toast.success(`Hello ${data.user}`)
 
                 setUsername(data.user);
                 setEmail(data.email);
@@ -33,7 +38,6 @@ const Home = () => {
 
             } catch (error) {
                 console.log(error)
-                // toast.error(`error logging in`)
                 return navigate('/login')
             }
         };
