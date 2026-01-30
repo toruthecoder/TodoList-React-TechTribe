@@ -16,12 +16,6 @@ const Home = () => {
     const { setTodos, resetTodos } = useTodos()
 
     useEffect(() => {
-        axios.post('/api/auth/verify', {}, { withCredentials: true })
-            .then(() => navigate('/'))
-            .catch(() => { navigate('/login') });
-    }, [navigate]);
-
-    useEffect(() => {
         const verifyCookie = async () => {
 
             try {
@@ -38,17 +32,27 @@ const Home = () => {
 
             } catch (error) {
                 console.log(error)
+                setTodos([])
                 return navigate('/login')
             }
         };
         verifyCookie();
     }, [cookies, navigate, setTodos]);
 
-    const Logout = () => {
-        removeCookie("token")
-        resetTodos();
-        navigate('/login')
-    }
+    const Logout = async () => {
+        try {
+            await axios.post(
+                `${import.meta.env.VITE_CLIENT_URL}/api/auth/logout`,
+                {},
+                { withCredentials: true }
+            );
+            removeCookie('token')
+            resetTodos();
+            navigate('/login');
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    };
 
     return (
         <div>
