@@ -66,6 +66,7 @@ const Signup = () => {
                             type="email"
                             name="email"
                             value={email}
+                            pattern="[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$"
                             className='focus:outline-none font-normal text-[14px] leading-[100%] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-3.75 w-88 my-1 h-12'
                             placeholder="Enter your email"
                             onChange={handleChange}

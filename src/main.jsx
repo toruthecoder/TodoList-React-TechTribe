@@ -5,17 +5,19 @@ import App from './App.jsx'
 import { TodoProvider } from './hooks/useTodo.jsx'
 import { Toaster } from 'react-hot-toast'
 import { BrowserRouter } from 'react-router-dom'
-import { CookiesProvider } from 'react-cookie'
+// import { Provider } from '.react-redux'
+// import { store } from './redux/store.js'
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter basename='/'>
-      <CookiesProvider>
-        <TodoProvider>
-          <App />
-          <Toaster />
-        </TodoProvider>
-      </CookiesProvider>
+      {/* <Provider store={store}> */}
+      <TodoProvider>
+        <App />
+        <Toaster />
+      </TodoProvider>
+      {/* </Provider> */}
     </BrowserRouter>
   </StrictMode>,
 )
