@@ -1,7 +1,5 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { TodoContext } from "../context/todoContext";
-import api from '../lib/axios.js'
-
 
 export const TodoProvider = ({ children }) => {
 
@@ -17,19 +15,6 @@ export const TodoProvider = ({ children }) => {
         createdAt: todo.createdAt ? new Date(todo.createdAt).getTime() : Date.now(),
         updatedAt: todo.updatedAt ? new Date(todo.updatedAt).getTime() : null,
     });
-
-    // get Local Todos from the backend
-    useEffect(() => {
-        const fetchTodos = async () => {
-            try {
-                const res = await api.get("/todos")
-                setTodos(res.data.map(mapTodos));
-            } catch (error) {
-                console.error(`Error Fetching the todos`, error)
-            }
-        }
-        fetchTodos()
-    }, [])
 
     // Filter & Sort 
     const FS = useMemo(() => {
