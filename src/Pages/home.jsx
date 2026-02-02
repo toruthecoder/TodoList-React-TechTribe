@@ -1,7 +1,6 @@
 import { useTodos } from '../context/todoContext.jsx'
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import axios from "axios";
 import api from '../lib/axios.js'
 import ToDo from '../Components/ToDo'
@@ -9,44 +8,42 @@ import ToDo from '../Components/ToDo'
 
 const Home = () => {
     const navigate = useNavigate();
-    const [cookies, removeCookie] = useCookies([])
     const [username, setUsername] = useState('')
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
     const { setTodos, resetTodos } = useTodos()
 
     useEffect(() => {
-        const verifyCookie = async () => {
+        const fetchTodos = async () => {
+            const user = JSON.parse(localStorage.getItem('user'))
+            if (!user) {
+                navigate('/login')
+            }
+
+            if (user) {
+                setUsername(user.username);
+                setEmail(user.email);
+            }
 
             try {
-                const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/api/auth/verify`, {}, { withCredentials: true });
-
-                setUsername(data.user);
-                setEmail(data.email);
-
                 const todosData = await api.get(`/todos`, { withCredentials: true });
                 setTodos(todosData.data.map(todo => ({
                     ...todo,
                     id: todo._id,
                 })));
-
             } catch (error) {
                 console.log(error)
-                setTodos([])
-                return navigate('/login')
+                localStorage.removeItem('user')
+                navigate('/login')
             }
         };
-        verifyCookie();
-    }, [cookies, navigate, setTodos]);
+        fetchTodos();
+    }, [navigate, setTodos]);
 
     const Logout = async () => {
         try {
-            await axios.post(
-                `${import.meta.env.VITE_CLIENT_URL}/api/auth/logout`,
-                {},
-                { withCredentials: true }
-            );
-            removeCookie('token')
+            await axios.post(`${import.meta.env.VITE_CLIENT_URL}/api/auth/logout`, {}, { withCredentials: true });
+            localStorage.removeItem('user')
             resetTodos();
             navigate('/login');
         } catch (error) {

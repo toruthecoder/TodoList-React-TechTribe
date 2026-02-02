@@ -33,14 +33,17 @@ const Login = () => {
         e.preventDefault();
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_CLIENT_URL}/api/auth/login`, { ...inputValue, }, { withCredentials: true })
-            const { success, message } = data
-            if (success) {
-                handleSuccess(message)
-                setTimeout(() => {
-                    navigate('/')
-                }, 1000)
-            } else {
-                handleError(message)
+            if (data) {
+                const { success, message, user } = data
+                if (success) {
+                    handleSuccess(message)
+                    localStorage.setItem('user', JSON.stringify(user))
+                    setTimeout(() => {
+                        navigate('/')
+                    }, 1000)
+                } else {
+                    handleError(message)
+                }
             }
         } catch (error) {
             console.log(error)
