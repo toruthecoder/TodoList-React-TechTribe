@@ -11,12 +11,10 @@ import api from '../lib/axios.js'
 const ToDo = () => {
     // Use States and refs
     const [title, setTitle] = useState('')
-    const { mapTodos, addTodo, todos, setfiltered, deleteTodo, editTodo, setSortBy, editTodoDesc } = useTodos()
-    const [editId, setEditId] = useState(null)
+    const { mapTodos, addTodo, setfiltered, deleteTodo, editTodo, setSortBy, editTodoDesc } = useTodos()
     const [loading, setLoading] = useState(true)
     const [openDescTodo, setOpenDescTodo] = useState(null)
     const descRef = useRef(null)
-
 
     // Functions
     const closeDesc = (e) => {
@@ -30,14 +28,6 @@ const ToDo = () => {
             toast.error(`todo title cannot be empty`)
             return
         }
-        // if (editId) {
-        //     editTodo(editId.id, title)
-        //     setEditId(null)
-        //     setTitle('')
-        // } else {
-        //     addTodo(title.trim())
-        //     setTitle('')
-        // }
 
         // From Backend
         try {
@@ -127,7 +117,7 @@ const ToDo = () => {
                         <button
                             className='addBtn cursor-pointer ml-2.5 font-normal text-[18px] leading-[100$] tracking-0 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 px-5'
                             onClick={handleAdd} style={{ fontFamily: 'Baloo Bhaina 2, sans-serif' }}
-                        >{editId ? 'Update' : 'Add'}</button>
+                        >Add</button>
 
                         <div>
                             <select name="" id="select"

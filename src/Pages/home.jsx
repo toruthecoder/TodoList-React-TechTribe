@@ -1,5 +1,5 @@
 import { useTodos } from '../context/todoContext.jsx'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import api from '../lib/axios.js'
@@ -12,6 +12,19 @@ const Home = () => {
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
     const { setTodos, resetTodos } = useTodos()
+    const inforef = useRef(null);
+
+    useEffect(() => {
+        const closeInfo = (e) => {
+            if (inforef.current && !inforef.current.contains(e.target)) {
+                setOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', closeInfo);
+
+        return () => document.removeEventListener('mousedown', closeInfo);
+    }, [inforef]);
 
     useEffect(() => {
         const fetchTodos = async () => {
@@ -65,7 +78,7 @@ const Home = () => {
                 {/* Dropdown */}
                 {open && (
                     <div
-                        className="absolute top-15 right-0 w-62.5 p-3.75 bg-white rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.1)]">
+                        className="absolute top-15 right-0 w-62.5 p-3.75 bg-white rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.1)]" ref={inforef} >
                         <p className="font-bold mb-1">
                             {username}
                         </p>
