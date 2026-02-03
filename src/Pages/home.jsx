@@ -13,10 +13,12 @@ const Home = () => {
     const [email, setEmail] = useState('');
     const { setTodos, resetTodos } = useTodos()
     const inforef = useRef(null);
+    const avatarRef = useRef(null);
 
     useEffect(() => {
         const closeInfo = (e) => {
-            if (inforef.current && !inforef.current.contains(e.target)) {
+            if (inforef.current && !inforef.current.contains(e.target) &&
+                avatarRef.current && !avatarRef.current.contains(e.target)) {
                 setOpen(false);
             }
         };
@@ -69,7 +71,7 @@ const Home = () => {
         <div>
             <div className="absolute z-100 top-5 right-5">
                 <div
-                    onClick={() => setOpen(!open)}
+                    onClick={() => setOpen(!open)} ref={avatarRef}
                     className="w-12.5 h-12.5 rounded-4xl cursor-pointer text-white bg-[#4f46e5] flex items-center justify-center text-[20px]"
                 >
                     {username?.charAt(0).toUpperCase()}
@@ -78,7 +80,7 @@ const Home = () => {
                 {/* Dropdown */}
                 {open && (
                     <div
-                        className="absolute top-15 right-0 w-62.5 p-3.75 bg-white rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.1)]" ref={inforef} >
+                        className="absolute top-15 right-0 w-62.5 p-3.75 bg-white rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.1)]" ref={inforef}>
                         <p className="font-bold mb-1">
                             {username}
                         </p>
