@@ -8,7 +8,7 @@ function NotFound() {
                 404 Page Not Found
             </h1>
             <h2 className="mb-8 text-3xl  text-black">
-                You Got Lost Traveller Return Back!
+                You Got Lost Traveler Return Back!
             </h2>
             <Link
                 to="/"
