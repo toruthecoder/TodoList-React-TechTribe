@@ -4,7 +4,7 @@ const AuthRedirect = ({ children }) => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (user) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/" />;
     }
 
     return children;
