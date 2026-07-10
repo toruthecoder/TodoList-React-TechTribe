@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import ChillhopVideo from '../assets/Chillhop.mp4';
 import Swal from 'sweetalert2'
 import { Rings } from 'react-loader-spinner'
-import List from "../Components/List"
+import List from "../Components/list"
 import Desc from './desc'
 import toast from 'react-hot-toast'
 import api from '../lib/axios.js'
